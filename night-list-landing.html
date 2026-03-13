@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Night List — Get On The List</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-dim: #8a6e2e;
+    --gold-bright: #e8c96a;
+    --black: #080806;
+    --surface: #0f0f0d;
+    --surface2: #161614;
+    --border: rgba(255,255,255,0.06);
+    --text: #f0ede8;
+    --muted: #5a5852;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ─────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(8,8,6,0.95), transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    display: flex; align-items: baseline; gap: 2px;
+  }
+  .nav-logo .nl {
+    font-size: 22px; font-weight: 900; color: var(--gold); letter-spacing: 2px;
+  }
+  .nav-logo .wordmark {
+    font-size: 11px; font-weight: 300; letter-spacing: 6px;
+    color: rgba(240,237,232,0.4); text-transform: uppercase; margin-left: 10px;
+  }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 13px;
+    font-weight: 500; letter-spacing: 0.5px; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--gold); color: #000;
+    border: none; padding: 10px 24px; border-radius: 100px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    font-family: 'Poppins', sans-serif; letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold-bright); transform: translateY(-1px); }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 120px 40px 80px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 100px; padding: 6px 16px;
+    font-size: 11px; font-weight: 600; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 36px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+    animation: pulse 2s infinite;
+  }
+
+  .hero-logo {
+    font-size: clamp(100px, 16vw, 200px);
+    font-weight: 900; color: var(--gold);
+    letter-spacing: -4px; line-height: 1;
+    margin-bottom: 8px;
+    animation: fadeUp 0.8s ease 0.1s both;
+    text-shadow: 0 0 80px rgba(201,168,76,0.2);
+  }
+
+  .hero-sub {
+    font-size: clamp(11px, 1.5vw, 14px);
+    font-weight: 300; letter-spacing: 10px;
+    color: rgba(240,237,232,0.35); text-transform: uppercase;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 80px);
+    font-weight: 300; line-height: 1.1;
+    color: var(--text); margin-bottom: 20px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .hero-headline em {
+    font-style: italic; color: var(--gold);
+  }
+
+  .hero-desc {
+    font-size: 16px; font-weight: 300; color: var(--muted);
+    max-width: 520px; line-height: 1.7; margin-bottom: 48px;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 14px; align-items: center;
+    animation: fadeUp 0.8s ease 0.5s both;
+  }
+
+  .btn-primary {
+    background: var(--gold); color: #000;
+    border: none; padding: 16px 36px; border-radius: 100px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    font-family: 'Poppins', sans-serif; letter-spacing: 0.5px;
+    transition: all 0.25s;
+    box-shadow: 0 8px 32px rgba(201,168,76,0.25);
+  }
+  .btn-primary:hover {
+    background: var(--gold-bright); transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(201,168,76,0.35);
+  }
+
+  .btn-ghost {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); padding: 16px 36px;
+    border-radius: 100px; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: 'Poppins', sans-serif;
+    transition: all 0.25s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+  /* ── APP PREVIEW ─────────────────────────────────── */
+  .preview-section {
+    padding: 40px 60px 100px;
+    display: flex; justify-content: center;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+
+  .phone-mockup {
+    width: 280px;
+    background: #0d0d0b;
+    border-radius: 44px;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 16px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.04),
+      0 60px 120px rgba(0,0,0,0.8),
+      0 0 80px rgba(201,168,76,0.04);
+    position: relative;
+  }
+
+  .phone-screen {
+    background: #080806;
+    border-radius: 32px;
+    overflow: hidden;
+    aspect-ratio: 9/19.5;
+    position: relative;
+  }
+
+  .phone-notch {
+    position: absolute; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 26px;
+    background: #0d0d0b; border-radius: 20px;
+    z-index: 10;
+  }
+
+  .screen-content {
+    padding: 50px 16px 16px;
+    height: 100%;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .screen-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 4px;
+  }
+
+  .screen-title { font-size: 18px; font-weight: 800; color: #fff; }
+  .screen-sub { font-size: 10px; color: #444; margin-top: 2px; }
+
+  .avail-badge {
+    background: rgba(74,222,128,0.1);
+    border: 1px solid rgba(74,222,128,0.25);
+    border-radius: 20px; padding: 4px 10px;
+    font-size: 9px; font-weight: 700; color: #4ade80;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .avail-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; }
+
+  .blueprint-area {
+    flex: 1;
+    background: rgba(255,255,255,0.02);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative; overflow: hidden;
+  }
+
+  /* Grid lines */
+  .blueprint-area::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .stage-bar {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 100px; height: 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7px; color: #333; letter-spacing: 1px;
+  }
+
+  .table-node {
+    position: absolute;
+    border-radius: 8px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 7px; font-weight: 700;
+    cursor: pointer;
+  }
+
+  .table-node.vip {
+    width: 54px; height: 38px; left: 14px; top: 44px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.6);
+    color: #C9A84C;
+    box-shadow: 0 0 12px rgba(201,168,76,0.2);
+  }
+  .table-node.premium {
+    width: 44px; height: 34px; left: 14px; top: 106px;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.5);
+    color: #a78bfa;
+    box-shadow: 0 0 10px rgba(124,58,237,0.15);
+  }
+  .table-node.booth {
+    width: 44px; height: 34px; right: 24px; top: 110px;
+    background: rgba(5,150,105,0.12);
+    border: 1px solid rgba(5,150,105,0.5);
+    color: #34d399;
+    box-shadow: 0 0 10px rgba(5,150,105,0.15);
+  }
+  .table-node.locked {
+    width: 54px; height: 38px; right: 20px; top: 44px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #333;
+  }
+
+  .table-price { font-size: 6px; opacity: 0.7; margin-top: 1px; }
+
+  .bar-strip {
+    position: absolute; bottom: 8px; left: 10px; right: 10px;
+    height: 22px; background: rgba(8,145,178,0.08);
+    border: 1px solid rgba(8,145,178,0.2);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7px; color: #0891B2; letter-spacing: 2px;
+  }
+
+  .screen-tabs {
+    display: flex; gap: 0;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px; padding: 4px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .tab {
+    flex: 1; padding: 8px 4px;
+    text-align: center; font-size: 8px;
+    color: #333; border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .tab.active { background: rgba(201,168,76,0.1); color: #C9A84C; }
+  .tab-icon { font-size: 12px; }
+
+  /* Two phones */
+  .phones-wrapper {
+    display: flex; align-items: flex-end; gap: -20px;
+    position: relative;
+  }
+
+  .phone-mockup.secondary {
+    transform: scale(0.88) translateX(20px);
+    opacity: 0.6;
+    transform-origin: bottom center;
+  }
+
+  /* ── STATS BAR ───────────────────────────────────── */
+  .stats-bar {
+    padding: 40px 60px;
+    display: flex; gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat-item {
+    flex: 1; text-align: center; padding: 20px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-size: 36px; font-weight: 800; color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px; color: var(--muted); margin-top: 6px;
+    letter-spacing: 1px; text-transform: uppercase; font-weight: 500;
+  }
+
+  /* ── SECTION SHARED ──────────────────────────────── */
+  section { padding: 100px 60px; }
+
+  .section-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 4px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 60px);
+    font-weight: 300; line-height: 1.1; color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 15px; color: var(--muted); line-height: 1.7;
+    max-width: 560px; font-weight: 300;
+  }
+
+  /* ── TWO SIDES ───────────────────────────────────── */
+  .two-sides {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sides-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+  }
+
+  .side-card {
+    background: var(--surface);
+    padding: 60px 56px;
+  }
+
+  .side-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 28px;
+  }
+
+  .side-icon.guest { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); }
+  .side-icon.owner { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); }
+
+  .side-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .side-label.guest { color: var(--gold); }
+  .side-label.owner { color: #a78bfa; }
+
+  .side-title {
+    font-size: 26px; font-weight: 700; color: var(--text);
+    margin-bottom: 14px; line-height: 1.2;
+  }
+
+  .side-desc {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    font-weight: 300; margin-bottom: 28px;
+  }
+
+  .side-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .side-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: rgba(240,237,232,0.6); font-weight: 400;
+  }
+
+  .side-features li::before {
+    content: ''; width: 5px; height: 5px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .guest .side-features li::before { background: var(--gold); }
+  .owner .side-features li::before { background: #a78bfa; }
+
+  /* ── FEATURES GRID ───────────────────────────────── */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; background: var(--border);
+    margin-top: 60px;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    padding: 36px 32px;
+    transition: background 0.2s;
+  }
+  .feature-card:hover { background: var(--surface2); }
+
+  .feature-icon {
+    font-size: 28px; margin-bottom: 16px;
+  }
+
+  .feature-title {
+    font-size: 16px; font-weight: 700; color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .feature-desc {
+    font-size: 13px; color: var(--muted); line-height: 1.6; font-weight: 300;
+  }
+
+  /* ── BLUEPRINT SHOWCASE ──────────────────────────── */
+  .blueprint-showcase {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .showcase-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .showcase-visual {
+    background: var(--black);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 28px;
+    position: relative; overflow: hidden;
+    aspect-ratio: 1;
+  }
+
+  .showcase-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .big-table {
+    position: absolute; border-radius: 14px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+
+  .big-table.t1 {
+    width: 130px; height: 90px; left: 40px; top: 60px;
+    background: rgba(201,168,76,0.1);
+    border: 1.5px solid rgba(201,168,76,0.7);
+    box-shadow: 0 0 30px rgba(201,168,76,0.15), inset 0 0 20px rgba(201,168,76,0.04);
+  }
+  .big-table.t2 {
+    width: 110px; height: 80px; right: 40px; top: 60px;
+    background: rgba(255,255,255,0.02);
+    border: 1.5px solid rgba(255,255,255,0.08);
+  }
+  .big-table.t3 {
+    width: 100px; height: 78px; left: 50px; bottom: 80px;
+    background: rgba(124,58,237,0.1);
+    border: 1.5px solid rgba(124,58,237,0.6);
+    box-shadow: 0 0 24px rgba(124,58,237,0.12);
+  }
+  .big-table.t4 {
+    width: 100px; height: 78px; right: 50px; bottom: 80px;
+    background: rgba(5,150,105,0.1);
+    border: 1.5px solid rgba(5,150,105,0.55);
+    box-shadow: 0 0 24px rgba(5,150,105,0.1);
+  }
+
+  .big-table-label { font-size: 11px; font-weight: 700; color: #C9A84C; }
+  .big-table.t2 .big-table-label { color: #333; }
+  .big-table.t3 .big-table-label { color: #a78bfa; }
+  .big-table.t4 .big-table-label { color: #34d399; }
+  .big-table-price { font-size: 10px; color: rgba(201,168,76,0.6); margin-top: 2px; }
+  .big-table.t3 .big-table-price { color: rgba(167,139,250,0.6); }
+  .big-table.t4 .big-table-price { color: rgba(52,211,153,0.6); }
+
+  .showcase-stage {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    width: 140px; height: 28px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #333; letter-spacing: 2px;
+  }
+
+  .showcase-bar {
+    position: absolute; bottom: 14px; left: 20px; right: 20px; height: 30px;
+    background: rgba(8,145,178,0.06);
+    border: 1px solid rgba(8,145,178,0.15); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #0891B2; letter-spacing: 2px;
+  }
+
+  .promo-dot {
+    position: absolute; top: -5px; right: -5px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--gold); border: 2px solid var(--black);
+    box-shadow: 0 0 10px rgba(201,168,76,0.8);
+  }
+
+  /* ── PRICING ─────────────────────────────────────── */
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; background: var(--border); margin-top: 60px;
+  }
+
+  .price-card {
+    background: var(--surface); padding: 44px 36px;
+    display: flex; flex-direction: column;
+    transition: background 0.2s;
+  }
+  .price-card.featured {
+    background: var(--surface2);
+    border: 1px solid rgba(201,168,76,0.2);
+    position: relative; margin: -1px;
+  }
+
+  .price-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #000;
+    font-size: 10px; font-weight: 800; letter-spacing: 2px;
+    padding: 4px 16px; border-radius: 100px; text-transform: uppercase;
+  }
+
+  .price-tier {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+  }
+
+  .price-amount {
+    font-size: 44px; font-weight: 900; color: var(--text); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-amount span { font-size: 18px; font-weight: 400; color: var(--muted); }
+
+  .price-period { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+
+  .price-features li {
+    font-size: 13px; color: rgba(240,237,232,0.6); font-weight: 300;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .price-features li::before {
+    content: '✓'; color: var(--gold); font-weight: 700; font-size: 12px;
+  }
+
+  .price-btn {
+    margin-top: 32px; padding: 14px;
+    border-radius: 100px; font-size: 13px; font-weight: 700;
+    cursor: pointer; font-family: 'Poppins', sans-serif;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: transparent; color: var(--gold);
+    transition: all 0.2s; letter-spacing: 0.5px;
+  }
+  .price-btn.featured-btn {
+    background: var(--gold); color: #000; border: none;
+    box-shadow: 0 8px 24px rgba(201,168,76,0.25);
+  }
+  .price-btn:hover { transform: translateY(-1px); }
+  .price-btn.featured-btn:hover { background: var(--gold-bright); }
+
+  /* ── CTA ─────────────────────────────────────────── */
+  .cta-section {
+    text-align: center; padding: 120px 60px;
+    position: relative; overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+
+  .cta-nl {
+    font-size: 120px; font-weight: 900; color: var(--gold);
+    line-height: 1; margin-bottom: 8px; opacity: 0.15;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: -2px; pointer-events: none;
+  }
+
+  .cta-content { position: relative; z-index: 1; }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 300; color: var(--text); line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .cta-title em { font-style: italic; color: var(--gold); }
+
+  .cta-desc {
+    font-size: 15px; color: var(--muted); line-height: 1.7;
+    font-weight: 300; margin-bottom: 48px; max-width: 460px; margin-left: auto; margin-right: auto;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────── */
+  footer {
+    padding: 40px 60px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo .nl { font-size: 18px; font-weight: 900; color: var(--gold); }
+  .footer-logo .sub { font-size: 10px; letter-spacing: 4px; color: var(--muted); text-transform: uppercase; }
+
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-copy { font-size: 12px; color: var(--muted); }
+
+  /* ── ANIMATIONS ──────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--gold); }
+    50% { opacity: 0.5; box-shadow: 0 0 4px var(--gold); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="nl">NL</span>
+    <span class="wordmark">Night List</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <button class="nav-cta">Get Early Access</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">Coming Soon · iOS App</div>
+  <div class="hero-logo">NL</div>
+  <div class="hero-sub">Night List</div>
+  <h1 class="hero-headline">The Operating System<br>for <em>Nightlife.</em></h1>
+  <p class="hero-desc">Club owners and promoters manage everything. Guests book visually — see the floor, pick their table, know the price before they walk in.</p>
+  <div class="hero-actions">
+    <button class="btn-primary">Get On The List →</button>
+    <button class="btn-ghost">See How It Works</button>
+  </div>
+</section>
+
+<!-- PHONE PREVIEW -->
+<div class="preview-section">
+  <div class="phone-mockup">
+    <div class="phone-screen">
+      <div class="phone-notch"></div>
+      <div class="screen-content">
+        <div class="screen-header">
+          <div>
+            <div class="screen-title">NOIR</div>
+            <div class="screen-sub">Floor Plan</div>
+          </div>
+          <div class="avail-badge">
+            <div class="avail-dot"></div> 3 available
+          </div>
+        </div>
+
+        <div class="blueprint-area">
+          <div class="stage-bar">🎵 STAGE</div>
+          <div class="table-node vip">
+            VIP 1<div class="table-price">$1,200</div>
+            <div class="promo-dot"></div>
+          </div>
+          <div class="table-node locked">
+            🔒
+          </div>
+          <div class="table-node premium">
+            Sec A<div class="table-price">$600</div>
+          </div>
+          <div class="table-node booth">
+            Booth<div class="table-price">$400</div>
+          </div>
+          <div class="bar-strip">🍸 BAR</div>
+        </div>
+
+        <div class="screen-tabs">
+          <div class="tab active">
+            <div class="tab-icon">🔍</div>
+            <div>Discover</div>
+          </div>
+          <div class="tab">
+            <div class="tab-icon">🎟</div>
+            <div>Bookings</div>
+          </div>
+          <div class="tab">
+            <div class="tab-icon">📊</div>
+            <div>Owner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar reveal">
+  <div class="stat-item">
+    <div class="stat-number">$30B+</div>
+    <div class="stat-label">US Nightlife Industry</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">0</div>
+    <div class="stat-label">Visual Booking Apps for Clubs</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">3 min</div>
+    <div class="stat-label">Average Booking Time</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">$99/mo</div>
+    <div class="stat-label">Starting Price for Venues</div>
+  </div>
+</div>
+
+<!-- TWO SIDES -->
+<section id="how" class="two-sides">
+  <div class="sides-grid">
+    <div class="side-card guest reveal">
+      <div class="side-icon guest">🌙</div>
+      <div class="side-label guest">For Guests</div>
+      <div class="side-title">See the floor.<br>Pick your table.<br>Know before you go.</div>
+      <p class="side-desc">No more showing up blind. Browse the actual layout of the club, see what's available, and book your exact table — with full pricing, rules, and promos upfront.</p>
+      <ul class="side-features">
+        <li>Interactive venue floor plan</li>
+        <li>Real-time table availability</li>
+        <li>Pricing, rules & promos shown upfront</li>
+        <li>Instant booking confirmation</li>
+        <li>Manage all reservations in one place</li>
+      </ul>
+    </div>
+    <div class="side-card owner reveal">
+      <div class="side-icon owner">📊</div>
+      <div class="side-label owner">For Owners & Promoters</div>
+      <div class="side-title">Every table.<br>Every booking.<br>Every dollar.</div>
+      <p class="side-desc">Replace the DMs, the spreadsheets, and the paper lists. Night List gives you a real-time dashboard for your entire operation — tables, promoters, revenue, and guests.</p>
+      <ul class="side-features">
+        <li>Floor plan builder & table management</li>
+        <li>Promoter accounts with tracking</li>
+        <li>Live booking dashboard</li>
+        <li>Revenue forecasting & analytics</li>
+        <li>Dynamic pricing & promo engine</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="padding-bottom: 0;">
+  <div class="reveal">
+    <div class="section-eyebrow">Core Features</div>
+    <h2 class="section-title">Everything Nightlife<br>Runs On.</h2>
+    <p class="section-desc">Night List replaces the DMs, the phone calls, the paper guest lists, and the guesswork — with one platform built for how clubs actually operate.</p>
+  </div>
+
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <div class="feature-icon">🗺️</div>
+      <div class="feature-title">Interactive Floor Plan</div>
+      <p class="feature-desc">Guests see the actual layout of your venue. Tap a table, see the details. The visual booking experience no one else has.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Real-Time Availability</div>
+      <p class="feature-desc">Tables update live. No double bookings, no back-and-forth. Guests always see what's actually open tonight.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎤</div>
+      <div class="feature-title">Promoter Management</div>
+      <p class="feature-desc">Create sub-accounts for your promoters. Track their bookings, measure their performance, and pay commissions automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎁</div>
+      <div class="feature-title">Promo Engine</div>
+      <p class="feature-desc">Set promos per table — "4 people in free", "complimentary champagne", "2-for-1 mixers". Guests see it before they book.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <div class="feature-title">Dynamic Pricing</div>
+      <p class="feature-desc">Different prices for Friday vs Saturday. Event-based pricing overrides. Minimum spend by table type. Full control.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <div class="feature-title">Revenue Analytics</div>
+      <p class="feature-desc">See projected revenue, occupancy rates, peak hours, and promoter ROI. Data your venue has never had before.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLUEPRINT SHOWCASE -->
+<section class="blueprint-showcase">
+  <div class="showcase-inner reveal">
+    <div>
+      <div class="section-eyebrow">The Hero Feature</div>
+      <h2 class="section-title">The Floor Plan<br>Changes Everything.</h2>
+      <p class="section-desc">No other platform in nightlife lets guests see the actual venue layout and choose their exact table. This is the moment that sells Night List — to guests and to owners.</p>
+      <br><br>
+      <ul class="side-features" style="list-style:none; display:flex; flex-direction:column; gap:12px;">
+        <li style="display:flex; align-items:center; gap:10px; font-size:14px; color:rgba(240,237,232,0.6);">
+          <span style="color:var(--gold); font-weight:700;">→</span> Pinch to zoom on the full floor
+        </li>
+        <li style="display:flex; align-items:center; gap:10px; font-size:14px; color:rgba(240,237,232,0.6);">
+          <span style="color:var(--gold); font-weight:700;">→</span> Tables glow when available
+        </li>
+        <li style="display:flex; align-items:center; gap:10px; font-size:14px; color:rgba(240,237,232,0.6);">
+          <span style="color:var(--gold); font-weight:700;">→</span> Tap to see price, rules & promos
+        </li>
+        <li style="display:flex; align-items:center; gap:10px; font-size:14px; color:rgba(240,237,232,0.6);">
+          <span style="color:var(--gold); font-weight:700;">→</span> Book in under 60 seconds
+        </li>
+      </ul>
+    </div>
+
+    <div class="showcase-visual">
+      <div class="showcase-stage">🎵 STAGE / DJ</div>
+      <div class="big-table t1">
+        <div class="promo-dot"></div>
+        <div class="big-table-label">VIP 1</div>
+        <div class="big-table-price">$1,200 min</div>
+      </div>
+      <div class="big-table t2">
+        <div style="font-size:20px;">🔒</div>
+      </div>
+      <div class="big-table t3">
+        <div class="big-table-label" style="color:#a78bfa;">Section A</div>
+        <div class="big-table-price" style="color:rgba(167,139,250,0.6);">$600 min</div>
+      </div>
+      <div class="big-table t4">
+        <div class="big-table-label" style="color:#34d399;">Booth 1</div>
+        <div class="big-table-price" style="color:rgba(52,211,153,0.6);">$400 min</div>
+      </div>
+      <div class="showcase-bar">🍸 &nbsp; MAIN BAR</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="reveal" style="text-align:center;">
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-title">Simple Pricing.<br>Venues Pay. Guests Don't.</h2>
+    <p class="section-desc" style="margin: 0 auto;">Club owners subscribe. Guests get the app for free. Every venue you sign brings their entire guest base onto Night List — no paid acquisition needed.</p>
+  </div>
+
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">$99<span>/mo</span></div>
+      <div class="price-period">per venue</div>
+      <ul class="price-features">
+        <li>Up to 50 tables</li>
+        <li>1 promoter account</li>
+        <li>Real-time booking dashboard</li>
+        <li>Basic analytics</li>
+        <li>Guest app included</li>
+      </ul>
+      <button class="price-btn">Get Started</button>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-tier">Pro</div>
+      <div class="price-amount">$249<span>/mo</span></div>
+      <div class="price-period">per venue</div>
+      <ul class="price-features">
+        <li>Unlimited tables</li>
+        <li>5 promoter accounts</li>
+        <li>Promo engine & dynamic pricing</li>
+        <li>Advanced analytics & reporting</li>
+        <li>Revenue forecasting</li>
+        <li>Priority support</li>
+      </ul>
+      <button class="price-btn featured-btn">Get Started</button>
+    </div>
+
+    <div class="price-card">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount" style="font-size:32px; padding-top:6px;">Custom</div>
+      <div class="price-period">multi-location</div>
+      <ul class="price-features">
+        <li>Unlimited venues</li>
+        <li>Unlimited promoters</li>
+        <li>White label option</li>
+        <li>Custom integrations</li>
+        <li>Dedicated account manager</li>
+      </ul>
+      <button class="price-btn">Contact Us</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-nl">NL</div>
+  <div class="cta-content reveal">
+    <h2 class="cta-title">The Velvet Rope<br>is Going <em>Digital.</em></h2>
+    <p class="cta-desc">Night List is launching in select cities. Get your venue on the platform early — or join the waitlist as a guest.</p>
+    <div class="hero-actions" style="justify-content:center;">
+      <button class="btn-primary">Get Your Venue On The List →</button>
+      <button class="btn-ghost">Join Guest Waitlist</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="nl">NL</div>
+    <div class="sub">Night List</div>
+  </div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">TikTok</a>
+    <a href="#">Contact</a>
+    <a href="#">Privacy</a>
+  </div>
+  <div class="footer-copy">© 2025 Night List. All rights reserved.</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
